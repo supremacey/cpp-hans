@@ -21,4 +21,8 @@ rational.o : Makefile   rational.cpp   rational.h
 matrix.o : Makefile   matrix.cpp   matrix.h rational.h vector.h 
 	$(CPP) -c $(Flags) matrix.cpp -o  matrix.o
 
+clean: 
+	rm -rf *.o main
+ 
+.PHONY: clean
 
