@@ -40,6 +40,8 @@ struct rational
       // What to do with i / 0?
       // What about 0 / 0?
       // What about -4 / -3?
+	
+   float vl(){return float(num)/denum;}
 
 };
 

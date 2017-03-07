@@ -15,6 +15,10 @@ struct vector
       : x{x}, y{y}
    { }
 
+   vector operator - (const vector& v1) {
+		return {x - v1.x, y - v1.y};
+   }
+
 };
 
 inline std::ostream& operator << ( std::ostream& out, const vector& v )
