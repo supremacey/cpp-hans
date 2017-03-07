@@ -4,7 +4,7 @@
 
 
 Flags = -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11
-CPP = g++
+CPP = g++-6
 
 
 main : Makefile   main.o rational.o matrix.o 
