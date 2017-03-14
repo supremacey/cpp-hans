@@ -19,3 +19,5 @@ stack::ensure_capacity( size_t c )
 		tab = newtab;
 	} 
 }
+
+

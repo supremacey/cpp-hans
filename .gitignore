@@ -1,3 +1,6 @@
+# Vim swap files
+*.swp
+
 # Some links
 *.dSYM
 .DS_Store
