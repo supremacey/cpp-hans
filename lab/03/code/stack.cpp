@@ -1,4 +1,13 @@
+#include <iostream>
 #include "stack.h"
+
+stack::stack( std::initializer_list<double> d ) : current_size{ d.size() },
+					   						      current_capacity{ d.size()*2 },
+										   		  tab{ new double[d.size()*2] }
+{
+	for (double i : d)
+		push(i);
+}
 
 void
 stack::ensure_capacity( size_t c )
@@ -20,4 +29,11 @@ stack::ensure_capacity( size_t c )
 	} 
 }
 
-
+void
+stack::push( double d )
+{
+	// TODO(maciej) You can merge last 2 operations into 1
+	ensure_capacity(current_size + 1);
+	tab[current_size - 1] = d;
+	++current_size;
+}
