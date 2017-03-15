@@ -7,8 +7,8 @@ Flags = -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11
 CPP = g++-6
 
 
-main : Makefile   main.o rational.o matrix.o 
-	$(CPP) $(Flags) -o main   main.o rational.o matrix.o 
+main.out : Makefile   main.o rational.o matrix.o 
+	$(CPP) $(Flags) -o main.out   main.o rational.o matrix.o 
 
 main.o : Makefile   main.cpp   matrix.h rational.h vector.h 
 	$(CPP) -c $(Flags) main.cpp -o  main.o
