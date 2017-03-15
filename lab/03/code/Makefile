@@ -1,12 +1,12 @@
 CPPC := g++
-CFLAGS := -Wall -pedantic -std=c++11
+CFLAGS := -Wextra -Wall -pedantic-errors -pedantic -std=c++11
 SRC := $(shell ls *.cpp)
 HPP := $(shell ls *.h)
 OUT := $(subst .cpp,.o,$(SRC))
 
 all: $(OUT) $(HPP)
 	@ echo "Starts linking! ---------------------------------------------"
-	$(CPPC) $^ -o main.out
+	$(CPPC) -o main $(OUT)
 	@ echo "All: Done! --------------------------------------------------"
 
 test: all
