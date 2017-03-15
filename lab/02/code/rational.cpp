@@ -13,8 +13,7 @@ constexpr bool POSITIVE = false;
 
 int rational::gcd( int n1, int n2 ) {
     int a, b, r;
-	//a = n1;
-	//b = n2;
+
     if (n1 > n2 ) { a = n1; b = n2; }
     else {a = n2; b = n1;}
 
@@ -27,7 +26,6 @@ int rational::gcd( int n1, int n2 ) {
 }
 
 void rational::normalize( ) {
-	std::cout <<"Przed: "<< *this << "\n";
 	// now this is infinity or undefined
 	if (denum == 0 )
 		throw std::domain_error("Division by 0 (denum is 0).");
@@ -37,35 +35,11 @@ void rational::normalize( ) {
 		denum = 1;
 		return;
 	}
-	int num2, denum2;
+	
+	// GCD can handle the sign?
 	auto _divisor = rational::gcd(num, denum);
-	num2 = num/_divisor;	
-	denum2 = denum/_divisor;
-
-	// how sign is preserved
-	auto _sign = POSITIVE;
-	if (num > 0 && denum > 0) 
-		_sign = POSITIVE;
-	else 
-		_sign = NEGATIVE;
-
-	num = std::abs(num);
-	denum = std::abs(denum);
-
-	_divisor = rational::gcd(num, denum);
-	num /= _divisor;
-	denum /= _divisor;
-
-	// restore of sign
-	if (_sign == NEGATIVE)
-		num *= -1;
-
-	if (denum2 < 0 ) {
-		num2 *= -1;
-		denum2 *= -1;
-	}
-	std::cout <<"Po: "<< *this << " " << num2 << "/" << denum2 << "\n";
-	assert (num == num2 && denum == denum2);
+	num = num/_divisor;	
+	denum = denum/_divisor;
 }
 
 rational operator - ( rational r ) {
