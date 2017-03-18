@@ -21,9 +21,7 @@ public:
 				  current_capacity{ s.current_capacity },
 				  tab{ new double[s.current_capacity] }
 	{
-		for (size_t i = 0; i<current_size; ++i)
-			tab[i] = s.tab[i];
-			
+		std::copy(s.tab, (s.tab + s.current_size), tab);
 	}
 	~stack( ) {
 		delete [] tab;
@@ -50,6 +48,8 @@ public:
 			return tab[current_size - 1];
 		throw std::out_of_range("Stack is empty.");
 	}
+	double operator[] (size_t i) const;
+	double& operator[] (size_t i);
 	size_t size( ) const { return current_size; }
 	bool empty( ) const { return current_size == 0; }
 	// Zadanie 4

@@ -26,8 +26,23 @@ void test() {
 #endif 
 }
 
+void newTest()
+{
+	stack s1 = {1,2,3,4,5,6,7,8,9,0};
+	std::cout << s1 << "\n";
+	s1 = s1;
+	stack s2 = s1;
+	s2[5] = 1000;
+	s2[0] = 1000;
+	s2[2] = 1000;
+	for (auto i : {0,1,2,3,4,5,6,7,8,9})
+		std::cout << s1[i];
+	std::cout << s1 << " "  << s2 << "\n";
+}
+
 int main(int argc, char* argv[])
 {
 	test();
+	newTest();
 	return 0;
 }

@@ -1,11 +1,12 @@
 #include "stack.h"
+#include <algorithm>
+#include <iterator>
 
-stack::stack( std::initializer_list<double> d ) : current_size{ 0 },
+stack::stack( std::initializer_list<double> d ) : current_size{ d.size() },
 						  current_capacity{ d.size()*2 },
 						  tab{ new double[d.size()*2] }
 {
-	for (double i : d)
-		push(i);
+	std::copy(d.begin(), d.end(), tab);
 }
 
 void
@@ -36,8 +37,7 @@ stack::push( double d )
 }
 void stack::operator = ( const stack& s ) {
 	double * buff = new double [s.current_capacity];
-	for (size_t i = 0; i<s.current_size; ++i)
-		buff[i] = s.tab[i];
+	std::copy(s.tab, (s.tab+s.current_size), buff);
 
 	current_size = s.current_size;
 	current_capacity = s.current_capacity;
@@ -50,13 +50,20 @@ void stack::operator = ( const stack& s ) {
 std::ostream&
 operator << (std::ostream& stream, const stack& s)
 {
-	// TODO(maciej) how to unget last 2 characters from a stream
-
-	if (s.current_size == 0)  return stream << "{}";
-
-	stream << "{" << s.tab[0];
-	for (size_t i = 1; i < s.current_size; ++i)
-		stream << s.tab[i];
+	// TODO(maciej) Make it more cool with streambuffer or i don't know :) 
+	stream << "{";
+	std::copy(s.tab, (s.tab+s.current_size), std::ostream_iterator<double>(stream, " "));
 	return stream << "}";
 }
-
+double
+stack::operator[] (size_t i) const
+{
+	if (i >= current_size) throw std::out_of_range("Out of range stack random access.");
+	return tab[i];
+}
+double&
+stack::operator[] (size_t i)
+{
+	if (i >= current_size) throw std::out_of_range("Out of range stack random access.");
+	return tab[i];
+}
