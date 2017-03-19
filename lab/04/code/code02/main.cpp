@@ -41,7 +41,7 @@ void task04and05() {
    std::cout << m1 * m1.inverse() << std::endl;
 }
 
-int main( int argc, char* argv [ ] )
+int main()
 {
 #if 0
    rational r1( 2, 6 );

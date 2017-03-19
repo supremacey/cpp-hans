@@ -2,13 +2,6 @@
 #include <algorithm>
 #include <iterator>
 
-stack::stack( std::initializer_list<double> d ) : current_size{ d.size() },
-						  current_capacity{ d.size()*2 },
-						  tab{ new double[d.size()*2] }
-{
-	std::copy(d.begin(), d.end(), tab);
-}
-
 void
 stack::ensure_capacity( size_t c )
 {
@@ -29,13 +22,66 @@ stack::ensure_capacity( size_t c )
 	} 
 }
 
+stack::stack( ) : current_size{0},
+		   current_capacity{0},
+		   tab{nullptr}
+{}
+
+stack::stack( std::initializer_list<double> d ) : current_size{ d.size() },
+						  current_capacity{ d.size()*2 },
+						  tab{ new double[d.size()*2] }
+{
+	std::copy(d.begin(), d.end(), tab);
+}
+
+stack::stack( const stack& s ) : current_size{ s.current_size },
+			  current_capacity{ s.current_capacity },
+			  tab{ new double[s.current_capacity] }
+{
+	std::copy(s.tab, (s.tab + s.current_size), tab);
+}
+
+stack::~stack( ) {
+	delete [] tab;
+}
+
 void
 stack::push( double d )
 {
 	ensure_capacity(current_size + 1);
 	tab[current_size++] = d;
 }
-void stack::operator = ( const stack& s ) {
+
+void
+stack::pop( ) {
+	if (current_size == 0)
+		throw std::runtime_error("Stack already empty.");
+	--current_size;
+}
+
+void
+stack::reset( size_t s ) {
+	if (s > current_size)
+		throw std::logic_error("Cannot reset smaller stack.");
+	current_size = s;
+}
+
+double&
+stack::top() {
+	if (current_size > 0)
+		return tab[current_size - 1];
+	throw std::out_of_range("Stack is empty.");
+}
+
+double
+stack::top( ) const {
+	if (current_size > 0)
+		return tab[current_size - 1];
+	throw std::out_of_range("Stack is empty.");
+}
+
+void
+stack::operator=( const stack& s ) {
 	double * buff = new double [s.current_capacity];
 	std::copy(s.tab, (s.tab+s.current_size), buff);
 
@@ -44,26 +90,80 @@ void stack::operator = ( const stack& s ) {
 	delete [] tab;
 	tab = buff;
 }
-// operator either can be defined here or be inlined in header class
-// notice that it doesn't have the class specifier (stack::) since
-// it is a friend, not a class method
-std::ostream&
-operator << (std::ostream& stream, const stack& s)
+
+// TODO(maciej) test it 
+stack
+stack::operator+(const stack& s) const
 {
-	// TODO(maciej) Make it more cool with streambuffer or i don't know :) 
-	stream << "{";
-	std::copy(s.tab, (s.tab+s.current_size), std::ostream_iterator<double>(stream, " "));
-	return stream << "}";
+	stack result{};
+	result.current_capacity = current_capacity + s.current_capacity;
+	result.current_size = current_size + s.current_size;
+	result.tab = new double[result.current_capacity];
+
+	std::copy(tab, (tab+current_size), result.tab);
+	std::copy(s.tab, (s.tab+s.current_size), (result.tab+current_size));
+	return result;	
 }
+
+//TODO(maciej) Add test in main
 double
 stack::operator[] (size_t i) const
 {
-	if (i >= current_size) throw std::out_of_range("Out of range stack random access.");
-	return tab[i];
+	if (i >= current_size)
+		throw std::out_of_range("Out of range stack random access.");
+	return tab[current_size - (i+1)];
 }
+//TODO(maciej) Add test in main
 double&
 stack::operator[] (size_t i)
 {
-	if (i >= current_size) throw std::out_of_range("Out of range stack random access.");
-	return tab[i];
+	if (i >= current_size)
+		throw std::out_of_range("Out of range stack random access.");
+	return tab[current_size - (i+1)];
+}
+//TODO(maciej) Add test in main
+void
+stack::operator+=(double d)
+{
+	push(d);
+}
+
+//TODO(maciej) Add test in main
+void
+stack::operator+=(const stack& s)
+{
+	size_t new_size = current_size + s.current_size;
+	double *buff = new double [new_size*2];
+
+	std::copy(tab, (tab+current_size), buff);
+	std::copy(s.tab, (s.tab+s.current_size), (buff+current_size));
+
+	tab = buff;
+	current_size = new_size;
+	current_capacity = new_size * 2;
+}
+
+std::ostream&
+operator << (std::ostream& stream, const stack& s)
+{
+	stream << "{";
+	std::copy(s.tab, (s.tab+s.current_size),
+			std::ostream_iterator<double>(stream, " "));
+	return stream << "}";
+}
+//TODO(maciej) Add test in main
+stack
+operator+(const stack& a, const stack& b)
+{
+	stack result{};
+
+	for(size_t i = a.size()-1; i>0; --i)
+	result.push(a[0]);
+
+	for(size_t i = b.size()-1; i>0; --i)
+		result.push(b[i]);
+	result.push(b[0]);
+
+	return result;
+
 }

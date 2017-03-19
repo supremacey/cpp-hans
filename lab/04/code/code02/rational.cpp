@@ -27,68 +27,68 @@ int rational::gcd( int n1, int n2 ) {
 
 void rational::normalize( ) {
 	// now this is infinity or undefined
-	if (denum == 0 )
+	if (denm() == 0 )
 		throw std::domain_error("Division by 0 (denum is 0).");
 
 	// if num is 0 there is nothing we have to do	
-	if (num == 0) {
-		denum = 1;
+	if (nm() == 0) {
+		denm() = 1;
 		return;
 	}
 	
 	// GCD can handle the sign?
-	auto _divisor = rational::gcd(num, denum);
-	num = num/_divisor;	
-	denum = denum/_divisor;
+	auto _divisor = rational::gcd(nm(), denm());
+	nm() = nm()/_divisor;	
+	denm() = denm()/_divisor;
 }
 
 rational operator - ( rational r ) {
-	r.num *= -1;
+	r.nm() *= -1;
 	return r;
 
-	auto _sign = ((r.num * r.denum) < 0) ? NEGATIVE : POSITIVE;
-	r.num = std::abs(r.num);
-	r.denum = std::abs(r.denum);
+	auto _sign = ((r.nm() * r.denm()) < 0) ? NEGATIVE : POSITIVE;
+	r.nm() = std::abs(r.nm());
+	r.denm() = std::abs(r.denm());
 
 	if ( _sign==POSITIVE )
-		r.num *= -1;
+		r.nm() *= -1;
 
 	return r;
 }
 
 rational operator + ( const rational& r1, const rational& r2 ) {
-	rational _result = { r1.num * r2.denum + r2.num * r1.denum , r1.denum * r2.denum};
+	rational _result = { r1.nm() * r2.denm() + r2.nm() * r1.denm() , r1.denm() * r2.denm()};
 	//_result.normalize();
 	return _result;
 }
 
 rational operator - ( const rational& r1, const rational& r2 ) {
-	rational _result = { r1.num * r2.denum - r2.num * r1.denum , r1.denum * r2.denum};
+	rational _result = { r1.nm() * r2.denm() - r2.nm() * r1.denm() , r1.denm() * r2.denm()};
 	//_result.normalize();
 	return _result;
 }
 
 rational operator * ( const rational& r1, const rational& r2 ) {
-	rational _result = {r1.num * r2.num, r1.denum * r2.denum};
+	rational _result = {r1.nm() * r2.nm(), r1.denm() * r2.denm()};
 	//_result.normalize();
 	return _result;
 }
 
 rational operator / ( const rational& r1, const rational& r2 ) {
-	rational _result = {r1.num * r2.denum, r1.denum * r2.num};
+	rational _result = {r1.nm() * r2.denm(), r1.denm() * r2.nm()};
 	//_result.normalize();
 	return _result;
 }
 
 bool operator == ( const rational& r1, const rational& r2 ) {
-	return (r1.denum == r2.denum && r1.num == r2.num);
+	return (r1.denm() == r2.denm() && r1.nm() == r2.nm());
 	auto _r1 = r1;
 	auto _r2 = r2;
 	_r1.normalize();
 	_r2.normalize();
 	
-	if (r1.denum == r2.denum) return r1.num == r2.num;
-	if (r1.num == r2.num) return r1.denum == r2.denum;
+	if (r1.denm() == r2.denm()) return r1.nm() == r2.nm();
+	if (r1.nm() == r2.nm()) return r1.denm() == r2.denm();
 
 	return false;
 }
@@ -98,7 +98,7 @@ bool operator != ( const rational& r1, const rational& r2 ) {
 }
 
 std::ostream& operator << ( std::ostream& stream, const rational& r ) {
-	return stream << r.num << "/" << r.denum;
+	return stream << r.nm() << "/" << r.denm();
 }
 
 #endif

@@ -38,7 +38,7 @@ matrix matrix::adjugate( ) const
 matrix matrix::inverse( ) const 
 {
    rational r = determinant( );
-   if( r. num == 0 ) 
+   if( r. nm() == 0 ) 
       throw std::runtime_error( "inverted matrix is singular" ); 
    return adjugate( ) / r;
 }

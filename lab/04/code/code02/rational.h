@@ -5,11 +5,15 @@
 
 struct rational
 {
+private:
    int num;
    int denum;
+public:
+   int nm() const { return num; }
+   int& nm() { return num; }
 
-   // Functions with the same name as the class are constructors.
-   // Default constructor constructs 0.
+   int denm() const { return denum; }
+   int& denm() { return denum; }
 
    rational( ) 
       : num{0},

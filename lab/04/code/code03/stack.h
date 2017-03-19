@@ -7,63 +7,34 @@
 
 class stack
 {
+private:
 	size_t current_size;
 	size_t current_capacity;
 	double* tab;
 	void ensure_capacity( size_t c );
 public:
-	stack( ) : current_size{0},
-			   current_capacity{0},
-			   tab{nullptr}
-	{}
+	stack( );
 	stack( std::initializer_list<double> d );
-	stack( const stack& s ) : current_size{ s.current_size },
-				  current_capacity{ s.current_capacity },
-				  tab{ new double[s.current_capacity] }
-	{
-		std::copy(s.tab, (s.tab + s.current_size), tab);
-	}
-	~stack( ) {
-		delete [] tab;
-	}
-	void operator = ( const stack& s );
+	stack( const stack& s );
+	~stack( );
+
 	void push( double d );
-	void pop( ) {
-		if (current_size == 0)
-			throw std::runtime_error("Stack already empty.");
-		--current_size;
-	}
-	void reset( size_t s ) {
-		if (s > current_size)
-			throw std::logic_error("Cannot reset smaller stack.");
-		current_size = s;
-	}
-	double& top() {
-		if (current_size > 0)
-			return tab[current_size - 1];
-		throw std::out_of_range("Stack is empty.");
-	}
-	double top( ) const {
-		if (current_size > 0)
-			return tab[current_size - 1];
-		throw std::out_of_range("Stack is empty.");
-	}
-	double operator[] (size_t i) const;
-	double& operator[] (size_t i);
+	void pop();
+	void reset(size_t s);
+	double& top();
+	double top() const;
 	size_t size( ) const { return current_size; }
 	bool empty( ) const { return current_size == 0; }
-	// Zadanie 4
+
+	void operator = ( const stack& s );
+	// --------- added -------------
+	//stack operator+(const stack&) const;
+	double operator[] (size_t i) const;
+	double& operator[] (size_t i);
+	void operator+=(double);
+	void operator+=(const stack&);
+	// --------- added -------------
 	friend std::ostream& operator<< (std::ostream& stream, const stack& s);
 };
-
-//inline std::ostream&
-//operator << (std::ostream& stream, const stack& s)
-//{
-//	// TODO(maciej) how to unge last 2 characters from a stream
-//	stream << "{ ";
-//	for (size_t i = 0; i < s.current_size; ++i)
-//		stream << s.tab[i] << ", ";
-//	return stream << "}";
-//}
-
+stack operator+(const stack&, const stack&);
 #endif // _STACK
