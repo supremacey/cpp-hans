@@ -1,0 +1,13 @@
+Compilers
+$ major steps
+- preprocesing > preprocessor
+ - -E
+ - preprocessor directives #
+ - preprocessor copies all function declarations from the included header file into preprocessed file
+
+- compilation > compiler
+ - -S
+ - from C to ASSEMBLY
+
+- assembling > assembler
+- linking > linker

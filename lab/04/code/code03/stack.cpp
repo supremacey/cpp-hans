@@ -91,21 +91,19 @@ stack::operator=( const stack& s ) {
 	tab = buff;
 }
 
-// TODO(maciej) test it 
-stack
-stack::operator+(const stack& s) const
-{
-	stack result{};
-	result.current_capacity = current_capacity + s.current_capacity;
-	result.current_size = current_size + s.current_size;
-	result.tab = new double[result.current_capacity];
+//stack
+//stack::operator+(const stack& s) const
+//{
+//	stack result{};
+//	result.current_capacity = current_capacity + s.current_capacity;
+//	result.current_size = current_size + s.current_size;
+//	result.tab = new double[result.current_capacity];
+//
+//	std::copy(tab, (tab+current_size), result.tab);
+//	std::copy(s.tab, (s.tab+s.current_size), (result.tab+current_size));
+//	return result;	
+//}
 
-	std::copy(tab, (tab+current_size), result.tab);
-	std::copy(s.tab, (s.tab+s.current_size), (result.tab+current_size));
-	return result;	
-}
-
-//TODO(maciej) Add test in main
 double
 stack::operator[] (size_t i) const
 {
@@ -113,7 +111,7 @@ stack::operator[] (size_t i) const
 		throw std::out_of_range("Out of range stack random access.");
 	return tab[current_size - (i+1)];
 }
-//TODO(maciej) Add test in main
+
 double&
 stack::operator[] (size_t i)
 {
@@ -121,14 +119,13 @@ stack::operator[] (size_t i)
 		throw std::out_of_range("Out of range stack random access.");
 	return tab[current_size - (i+1)];
 }
-//TODO(maciej) Add test in main
+
 void
 stack::operator+=(double d)
 {
 	push(d);
 }
 
-//TODO(maciej) Add test in main
 void
 stack::operator+=(const stack& s)
 {
@@ -143,6 +140,7 @@ stack::operator+=(const stack& s)
 	current_capacity = new_size * 2;
 }
 
+// NEW
 std::ostream&
 operator << (std::ostream& stream, const stack& s)
 {
@@ -151,7 +149,18 @@ operator << (std::ostream& stream, const stack& s)
 			std::ostream_iterator<double>(stream, " "));
 	return stream << "}";
 }
-//TODO(maciej) Add test in main
+#if 0
+// OLD
+std::ostream&
+operator << (std::ostream& stream, const stack& s)
+{
+	stream << "{";
+	for (size_t i =0; i<s.current_size; ++i)
+		stream << ", " << s.tab[i];
+	return stream << "}";
+}
+#endif
+
 stack
 operator+(const stack& a, const stack& b)
 {
@@ -165,5 +174,4 @@ operator+(const stack& a, const stack& b)
 	result.push(b[0]);
 
 	return result;
-
 }

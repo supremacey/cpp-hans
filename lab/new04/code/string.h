@@ -1,4 +1,3 @@
-
 #ifndef STRING_INCLUDED 
 #define STRING_INCLUDED 1
 
@@ -32,6 +31,13 @@ public:
          p[i] = s.p[i]; 
    }
 
+	using iterator = char*;
+	using const_iterator = const char*;
+	const_iterator begin() const { return p; }
+	const_iterator end() const { return p+len; }
+	iterator begin() { return p; }
+	iterator end() { return p+len; }
+
    void operator = ( const string& s )
    { 
       if( len != s.len )
@@ -51,10 +57,23 @@ public:
    {
       delete[] p;
    }
-
+	
+   char operator[](size_t i) const;
+   char& operator[](size_t i);
+   void operator+=(char c);
+   void operator+=(const string& s);
 };
+// TODO(maciej) check for RTO
+string operator+(const string& s1, const string& s2);
 
 std::ostream& operator << ( std::ostream& out, const string& s );
+
+bool operator == ( const string& s1, const string& s2 );
+bool operator != ( const string& s1, const string& s2 );
+bool operator < ( const string& s1, const string& s2 );
+bool operator > ( const string& s1, const string& s2 );
+bool operator <= ( const string& s1, const string& s2 );
+bool operator >= ( const string& s1, const string& s2 );
 
 #endif
 

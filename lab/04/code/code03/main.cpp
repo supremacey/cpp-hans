@@ -1,7 +1,13 @@
 #include <iostream>
 #include <cassert>
+#include <stdexcept>
+#include <iterator>
+#include <algorithm>
 #include "stack.h"
 
+#define OLD	0
+
+#if OLD
 void test() {
 	stack s1 = { 1, 2, 3, 4, 5 };
 	stack s2 = s1; // Copy constructor.
@@ -39,6 +45,7 @@ void newTest()
 		std::cout << s1[i];
 	std::cout << s1 << " "  << s2 << "\n";
 }
+#endif // OLD
 
 // Random access operator test
 void test_randacc()
@@ -97,8 +104,10 @@ void test_add()
 
 int main()
 {
-	//test();
-	//newTest();
+#if OLD
+	test();
+	newTest();
+#endif
 	test_randacc();
 	test_add();
 	test_adeq();
