@@ -1,3 +1,8 @@
+# Dont want them
+/emcpp
+/other
+main
+
 # Vim swap files
 *.swp
 
