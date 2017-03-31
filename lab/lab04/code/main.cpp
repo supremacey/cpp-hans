@@ -101,6 +101,8 @@ void test_logic()
 	std::cout << s2 << " < " << s3 << " : " << std::boolalpha << (s2 < s3) << "\n";
 	std::cout << s1 << " > " << s2 << " : " << std::boolalpha << (s1 > s2) << "\n";
 	std::cout << s2 << " > " << s3 << " : " << std::boolalpha << (s2 > s3) << "\n";
+	std::cout << s2 << " < " << s2 << " : " << std::boolalpha << (s2 < s2) << "\n";
+	std::cout << s2 << " > " << s2 << " : " << std::boolalpha << (s2 > s2) << "\n";
 
 	std::cout << "\noperator<=(string, string) operator>=(string, string)----------\n";
 	std::cout << s1 << " <= " << s2 << " : " << std::boolalpha << (s1 <= s2) << "\n";

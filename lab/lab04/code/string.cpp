@@ -60,12 +60,14 @@ std::ostream& operator << ( std::ostream& out, const string& s )
 bool
 operator == ( const string& s1, const string& s2 ) 
 {
-	bool result = (s1.size() == s2.size()); 
-	if (result) {
+	if (s1.size() == s2.size()) {
 		for (size_t i = 0; i<s1.size(); ++i)
-			result = result && (s1[i] == s2[i]);
+			if (s1[i] != s2[i])
+				return false;
+
+		return true;
 	}
-	return result;
+	return false;
 }
 bool
 operator != ( const string& s1, const string& s2 )
@@ -76,27 +78,27 @@ bool
 operator < ( const string& s1, const string& s2 )
 {
 	size_t l = std::min(s1.size(), s2.size());
-	bool result = (s1.size() < s2.size());
-	for (size_t i =0; i<l; ++i) {
-		if (s1[i] == s2[i]) continue;
-		return s1[i] < s2[i];
-	}
-	return result;
+
+	for (size_t i = 0; i<l; ++i)
+		if (s1[i] != s2[i])
+			return s1[i] < s2[i];
+	
+	return s1.size() < s2.size();
 }
 bool
 operator > ( const string& s1, const string& s2 )
 {
-	return !(s1 <= s2);
+	return !(s2 < s1) && (s1.size() > s2.size());
 }
 bool
 operator <= ( const string& s1, const string& s2 )
 {
-	return (s1 == s2) || (s1 < s2);
+	return !(s1 > s2);  // OK
 }
 bool
 operator >= ( const string& s1, const string& s2 )
 {
-	return (s1 == s2) || !(s1 < s2);
+	return !(s1 < s2); // OK
 }
 
 

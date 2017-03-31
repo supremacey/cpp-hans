@@ -12,7 +12,7 @@
 # 	g++ -o main.o -c main.cpp $(Flags) 
 # 
 ##################### Improved Makefile #############################
-CXXFLAGS += -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11
+CXXFLAGS += -Wpedantic -Wunused -Wextra -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11
 
 main : main.o string.o 
 	$(CXX) -o main main.o string.o $(CXXFLAGS)
