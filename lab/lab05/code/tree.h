@@ -1,7 +1,5 @@
-
 #ifndef TREE_INCLUDED
 #define TREE_INCLUDED  1
-
 
 #include <iostream>
 #include <vector>
@@ -15,8 +13,7 @@ class tree;
 // In real code, trnode should be defined inside tree.
 
 
-struct trnode 
-{
+struct trnode {
    string f;
    std::vector< tree > subtrees;
    
@@ -40,8 +37,7 @@ struct trnode
 };
 
 
-class tree
-{
+class tree {
    trnode* pntr;
 
 public: 
@@ -86,5 +82,5 @@ std::ostream& operator << ( std::ostream& stream, const tree& t );
    // Doesn't need to be friend, because it uses only functor( ),
    // nrsubtrees( ) and [ ].
 
-#endif
+#endif  // TREE_INCLUDED
 
