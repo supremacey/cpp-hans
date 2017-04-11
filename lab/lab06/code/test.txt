@@ -1,0 +1,1 @@
+Finally, compare sorting on std::list with sorting on std::vector. Which is the fastest of all your sorting algorithms?

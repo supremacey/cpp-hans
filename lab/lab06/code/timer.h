@@ -1,4 +1,3 @@
-
 #ifndef TIMER_INCLUDED
 #define TIMER_INCLUDED  1
 
