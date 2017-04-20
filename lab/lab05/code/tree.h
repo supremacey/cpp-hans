@@ -53,22 +53,12 @@ public:
       : pntr( new trnode( f, std::move( subtrees ), 1 ))
    { }
 
-
-   tree( const tree& t )
-   {
-	   pntr = t.pntr;
-	   ++(pntr->refcnt); 
-   }
+   tree( const tree& t );
       // There is no need to write tree( tree&& t ),
       // because we cannot improve. 
 
-   void operator = ( tree&& t ) 
-   {
-	   pntr = t.pntr;
-	   t.pntr = nullptr;
-   }
-
-   void operator = ( const tree& t ); 
+   void operator = ( tree&& t );
+   void operator = ( const tree& t );
  
    const string& functor( ) const;
    string& functor( );
@@ -77,12 +67,7 @@ public:
    tree& operator [ ] ( size_t i );
    size_t nrsubtrees( ) const; 
 
-   ~tree( )
-   {
-	  if ( --(pntr->refcnt) == 0) {
-		  delete pntr;
-	  }
-   }
+   ~tree( );
 
 private: 
 public: 
