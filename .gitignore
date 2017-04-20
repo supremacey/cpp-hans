@@ -1,6 +1,8 @@
 # Dont want them
 /emcpp
+/tcpl
 /other
+/playground
 main
 
 # Vim swap files
