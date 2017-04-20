@@ -17,7 +17,7 @@ struct trnode {
    string f;
    std::vector< tree > subtrees;
    
-   size_t refcnt;
+   size_t refcnt;  // how many times I am refere to :)?
       // The reference counter: Counts how often this trnode is referred to.
 
    trnode( const string& f, const std::vector< tree > & subtrees, 
@@ -49,16 +49,25 @@ public:
       : pntr( new trnode( f, subtrees, 1 ))
    { } 
  
-   tree( const std::string& f, std::vector< tree > && subtrees )
+   tree( const string& f, std::vector< tree > && subtrees )
       : pntr( new trnode( f, std::move( subtrees ), 1 ))
    { }
 
 
-   tree( const tree& t );
+   tree( const tree& t )
+   {
+	   pntr = t.pntr;
+	   ++(pntr->refcnt); 
+   }
       // There is no need to write tree( tree&& t ),
       // because we cannot improve. 
 
-   void operator = ( tree&& t ); 
+   void operator = ( tree&& t ) 
+   {
+	   pntr = t.pntr;
+	   t.pntr = nullptr;
+   }
+
    void operator = ( const tree& t ); 
  
    const string& functor( ) const;
@@ -68,7 +77,12 @@ public:
    tree& operator [ ] ( size_t i );
    size_t nrsubtrees( ) const; 
 
-   ~tree( );
+   ~tree( )
+   {
+	  if ( --(pntr->refcnt) == 0) {
+		  delete pntr;
+	  }
+   }
 
 private: 
 public: 
