@@ -9,7 +9,7 @@ TBIN_DIR = $(TEST_DIR)/bin
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = sample1_unittest.out
+TESTS = sample1_unittest.out tree_unittest.out
 
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
@@ -28,7 +28,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11
 
 
 all: test
@@ -50,6 +50,18 @@ sample1_unittest.out : sample1_unittest.o
 	$(GTEST_BIN)/gtest_main.a \
 	-o $@
 
+tree_unittest.o : $(TSRC_DIR)/tree_unittest.cpp \
+                     $(SRC_DIR)/tree.h $(SRC_DIR)/string.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TSRC_DIR)/tree_unittest.cpp \
+	-o $(TBIN_DIR)/$@
+
+tree_unittest.out : tree_unittest.o
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread \
+	$(BIN_DIR)/tree.o \
+	$(BIN_DIR)/string.o \
+	$(TBIN_DIR)/tree_unittest.o \
+	$(GTEST_BIN)/gtest_main.a \
+	-o $@
 #---------------------------------------- 
 clean:
 	rm -rf $(TESTS) $(TBIN_DIR)

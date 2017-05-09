@@ -2,15 +2,16 @@
 
 tree::tree( const tree& t )
 {
-   std::cout << "\tCC(const tree&) " << t.functor() << " \n" ;
+   //std::cout << "\tCC(const tree&) " << t.functor() << " \n" ;
    pntr = t.pntr;
-   ++(pntr->refcnt); 
+   if (pntr != nullptr)
+	   ++(pntr->refcnt); 
 }
 
 void
 tree::operator=( tree&& t ) 
 {
-	std::cout << "\t=(tree&&)\n";
+	//std::cout << "\t=(tree&&)\n";
 	
 	if (pntr != nullptr)
 		if ( --(pntr->refcnt)==0)
@@ -24,7 +25,7 @@ void
 tree::operator=( const tree& t ) 
 {
 	if (this != &t) {
-		std::cout << "\t=(const tree&)\n";
+		//std::cout << "\t=(const tree&)\n";
 
 		if (pntr != nullptr)
 			if ( --(pntr->refcnt)==0)
@@ -40,18 +41,18 @@ tree::~tree( )
 {
 	if (pntr != nullptr) {
 		string tmp = functor();
-		std::cout << "\t~D(1/3) " << tmp
-			<< " " << (pntr->refcnt) << "\n";
+		//std::cout << "\t~D(1/3) " << tmp
+			//<< " " << (pntr->refcnt) << "\n";
 
 		if ( --(pntr->refcnt) == 0) {
-			std::cout << "\t\t~D(2/3) " << tmp
-				<< " " << (pntr->refcnt) << "\n";
+			//std::cout << "\t\t~D(2/3) " << tmp
+				//<< " " << (pntr->refcnt) << "\n";
 
 			delete pntr;
 		}
 
-		std::cout << "\t\t\t~D(3/3) " << tmp
-			<< " " << (pntr->refcnt) << "\n";
+		//std::cout << "\t\t\t~D(3/3) " << tmp
+			//<< " " << (pntr->refcnt) << "\n";
 	}
 }
 
@@ -64,33 +65,46 @@ tree::functor( ) const
 string&
 tree::functor( )
 {
-	// TODO  Fix when ensure_not_shared is implemented
+	ensure_not_shared();
 	return(pntr->f);
 }
 
 const tree&
 tree::operator [ ] ( size_t i ) const
 {
-	if ( i==0 ) return(*this);
-	return (pntr->subtrees.at(--i));
+{
+	// TODO fix this
+	return (pntr->subtrees.at(i));
 }
 
 tree&
 tree::operator [ ] ( size_t i )
 {
-	// TODO Fix when ensure_not_shared is implemented
-	if ( i==0 ) return(*this);
-	return (pntr->subtrees.at(--i));
+{
+	// TODO fix this
+	ensure_not_shared();
+	tree& result = pntr->subtrees.at(i);
+	result.ensure_not_shared();
+	return (result);
 }
 
 size_t
 tree::nrsubtrees( ) const 
 {
+	// TODO fix this
 	return(pntr->subtrees.size());
 }
 
-//void
-//tree::ensure_not_shared( ); 
+void
+tree::ensure_not_shared() 
+{
+	if (pntr != nullptr)
+		if (pntr->refcnt != 1) {
+			trnode *buff = new trnode(pntr->f, pntr->subtrees, 1);
+			--pntr->refcnt;
+			pntr = buff;
+		}
+}
 
 std::ostream&
 operator<<(std::ostream& stream, const tree& t)
