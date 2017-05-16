@@ -86,7 +86,17 @@ std::list< move > findpath( const leveltable& levels,
    return path;
 }
  
+void test()
+{
+    fifteen f{ { 1, 3, 4, 12 }, 
+               { 5, 2, 7, 11 }, 
+               { 9, 6, 14, 10 }, 
+               { 13, 15, 0, 8 } } ;
+	fifteen f2 {};
 
+	std::cout << f << "\n";
+	std::cout << f2 << "\n";
+}
 
 
 

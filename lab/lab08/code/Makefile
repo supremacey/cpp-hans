@@ -1,9 +1,7 @@
-
 # Automatically generated Makefile
 # Makefile-generator programmed by Hans de Nivelle, 2002
 
-
-Flags = -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11
+Flags = -Wreturn-type -pedantic -pedantic-errors -Wundef -std=c++11 -Wextra
 CPP = g++
 
 

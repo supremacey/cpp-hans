@@ -2,7 +2,6 @@
 
 tree::tree( const tree& t )
 {
-   //std::cout << "\tCC(const tree&) " << t.functor() << " \n" ;
    pntr = t.pntr;
    if (pntr != nullptr)
 	   ++(pntr->refcnt); 
@@ -11,8 +10,6 @@ tree::tree( const tree& t )
 void
 tree::operator=( tree&& t ) 
 {
-	//std::cout << "\t=(tree&&)\n";
-	
 	if (pntr != nullptr)
 		if ( --(pntr->refcnt)==0)
 			delete pntr;
@@ -25,7 +22,6 @@ void
 tree::operator=( const tree& t ) 
 {
 	if (this != &t) {
-		//std::cout << "\t=(const tree&)\n";
 
 		if (pntr != nullptr)
 			if ( --(pntr->refcnt)==0)
@@ -33,26 +29,15 @@ tree::operator=( const tree& t )
 
 		pntr = t.pntr;
 		++(pntr->refcnt); 
-		std::cout << "\tOK\n";
 	}
 }
 
 tree::~tree( )
 {
 	if (pntr != nullptr) {
-		string tmp = functor();
-		//std::cout << "\t~D(1/3) " << tmp
-			//<< " " << (pntr->refcnt) << "\n";
-
 		if ( --(pntr->refcnt) == 0) {
-			//std::cout << "\t\t~D(2/3) " << tmp
-				//<< " " << (pntr->refcnt) << "\n";
-
 			delete pntr;
 		}
-
-		//std::cout << "\t\t\t~D(3/3) " << tmp
-			//<< " " << (pntr->refcnt) << "\n";
 	}
 }
 
@@ -72,26 +57,19 @@ tree::functor( )
 const tree&
 tree::operator [ ] ( size_t i ) const
 {
-{
-	// TODO fix this
 	return (pntr->subtrees.at(i));
 }
 
 tree&
 tree::operator [ ] ( size_t i )
 {
-{
-	// TODO fix this
 	ensure_not_shared();
-	tree& result = pntr->subtrees.at(i);
-	result.ensure_not_shared();
-	return (result);
+	return pntr->subtrees.at(i);
 }
 
 size_t
 tree::nrsubtrees( ) const 
 {
-	// TODO fix this
 	return(pntr->subtrees.size());
 }
 
@@ -106,15 +84,69 @@ tree::ensure_not_shared()
 		}
 }
 
+size_t
+tree::getaddress() const
+{
+	return reinterpret_cast<size_t>(pntr);
+}
+
+// replaces i-th subtree
+void
+tree::replacesubtree(size_t i, const tree& t)
+{
+	ensure_not_shared();
+	pntr->subtrees.at(i) = t;
+}
+
+// replaces the functor
+void
+tree::replacefunctor(const string& s)
+{
+	if (this->pntr != nullptr) {
+		ensure_not_shared();
+		pntr->f = s;
+	}
+}
+
+//tree
+//subst(const tree& t, const string& var, const tree& val)
+//{
+	//if (t.nrsubtrees() == 0 && t.functor() == var) {
+		//return val;
+	//}
+	//else {
+		//auto result = t;
+		//for (size_t i = 0; i<result.nrsubtrees(); ++i) {
+			//result[i] = subst(result[i], var, val);
+		//}
+		//return result;
+	//}
+//}
+
+tree
+subst(const tree& t, const string& var, const tree& val)
+{
+	if (t.nrsubtrees() != 0) {
+		for (size_t i = 0; i<t.nrsubtrees(); ++i) {
+			if (t[i].nrsubtrees() == 0 && t[i].functor() == var) {
+				t.replacesubtree(i, val);
+			}
+			else {
+				subst(t[i], var, val);
+			}
+		}
+		return t;
+	}
+	else if (t.functor() == var) {
+		return val;
+	}
+}
+
 std::ostream&
 operator<<(std::ostream& stream, const tree& t)
 {
 	stream << "(" << t.functor() << ")->{"; 
-	for (
-			size_t i = 1, sbtrees = t.nrsubtrees() + 1;
-			i<sbtrees;
-			++i
-		) 
+	for (size_t i = 0; i<t.nrsubtrees(); ++i) 
 		stream << " " << i << "." << t[i];
 
 	return(stream << " }");

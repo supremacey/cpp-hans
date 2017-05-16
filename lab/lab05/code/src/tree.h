@@ -66,16 +66,24 @@ public:
    const tree& operator [ ] ( size_t i ) const;
    tree& operator [ ] ( size_t i );
    size_t nrsubtrees( ) const; 
+   size_t getaddress() const;
+
+   // replaces i-th subtree
+   void replacesubtree(size_t i, const tree& t);
+   // replaces the functor
+   void replacefunctor(const string& s);
 
    ~tree( );
 
 private: 
-public: 
+//public: 
    // Delete public, when the thing is tested:
 
    void ensure_not_shared( ); 
 
 };
+
+tree subst(tree& t, const string& var, const tree& val);
 
 std::ostream& operator << ( std::ostream& stream, const tree& t );
    // Doesn't need to be friend, because it uses only functor( ),

@@ -20,6 +20,9 @@ struct case_insensitive_equality {
 size_t
 case_insensitive_hash::operator()( const std::string& s ) const
 {
+	// bad - kopiowanie stringa do pamięci
+	// iteruj po każdej litercce i napisz własną funkcję hashującą, np.
+	// h = h * bigPrime + s[i]
 	std::string lwr{s};
 	std::transform(lwr.begin(), lwr.end(), lwr.begin(), ::tolower);
 	std::hash<std::string> hf;
