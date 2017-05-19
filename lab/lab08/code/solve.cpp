@@ -95,8 +95,8 @@ void test()
 	       { 13, 15, 0, 8 } } ;
 	std::cout << f << "\n";
 
-	//fifteen f2 {};
-	//std::cout << f2 << "\n";
+	fifteen f2 {};
+	std::cout << f2 << "\n";
 }
 
 
