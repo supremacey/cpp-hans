@@ -1,4 +1,3 @@
-
 #ifndef FIFTEEN_INCLUDED
 #define FIFTEEN_INCLUDED  1
 

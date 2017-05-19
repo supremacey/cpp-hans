@@ -86,41 +86,46 @@ std::list< move > findpath( const leveltable& levels,
    return path;
 }
  
+// Tests --------------------------------------------------
 void test()
 {
-    fifteen f{ { 1, 3, 4, 12 }, 
-               { 5, 2, 7, 11 }, 
-               { 9, 6, 14, 10 }, 
-               { 13, 15, 0, 8 } } ;
-	fifteen f2 {};
-
+	fifteen f{ { 1, 3, 4, 12 }, 
+	       { 5, 2, 7, 11 }, 
+	       { 9, 6, 14, 10 }, 
+	       { 13, 15, 0, 8 } } ;
 	std::cout << f << "\n";
-	std::cout << f2 << "\n";
+
+	//fifteen f2 {};
+	//std::cout << f2 << "\n";
 }
 
 
 
+//void the_main()
+//{
+//   leveltable test;
+//
+//   fifteen f{ { 1, 3, 4, 12 }, 
+//              { 5, 2, 7, 11 }, 
+//              { 9, 6, 14, 10 }, 
+//              { 13, 15, 0, 8 } } ;
+//  
+//
+//   auto dist = solve(f);
+//   for( const auto& p : dist )
+//   {
+//      std::cout << "---------------------------\n";
+//      std::cout << p.first << " " << p. second << "\n";
+//   }
+//
+//   auto path = findpath( dist, fifteen( ), dist[ fifteen( ) ] );
+//   for( move m : path )
+//      std::cout << m << "\n";
+//}
+
 int main( int argc, char* argv [] )
 {
-   leveltable test;
-
-   fifteen f{ { 1, 3, 4, 12 }, 
-              { 5, 2, 7, 11 }, 
-              { 9, 6, 14, 10 }, 
-              { 13, 15, 0, 8 } } ;
-  
-
-   auto dist = solve(f);
-   for( const auto& p : dist )
-   {
-      std::cout << "---------------------------\n";
-      std::cout << p.first << " " << p. second << "\n";
-   }
-
-   auto path = findpath( dist, fifteen( ), dist[ fifteen( ) ] );
-   for( move m : path )
-      std::cout << m << "\n";
-
+	test();
    return 0;
 }
 
