@@ -83,7 +83,7 @@ private:
 
 };
 
-tree subst(tree& t, const string& var, const tree& val);
+tree subst(const tree& t, const string& var, const tree& val);
 
 std::ostream& operator << ( std::ostream& stream, const tree& t );
    // Doesn't need to be friend, because it uses only functor( ),
