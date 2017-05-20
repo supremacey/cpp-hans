@@ -11,9 +11,10 @@
 
 class fifteen
 {
-private: 
+public:
    static constexpr size_t dimension = 4;
       // Test for different dimensions. Don't be lazy!
+private: 
 
    static_assert( dimension > 1, "dimension must be two at least" );
 
