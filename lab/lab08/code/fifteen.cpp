@@ -152,6 +152,7 @@ std::ostream& operator << ( std::ostream& stream, const fifteen& f )
 		stream << "+\n";
 	};
 
+	stream << "\n";
 	for (size_t i =0; i<f.dimension; ++i) {
 		line();
 		for (size_t j =0; j<f.dimension; ++j) {
