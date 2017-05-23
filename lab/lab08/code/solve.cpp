@@ -135,6 +135,45 @@ void test4()
 	}
 }
 
+void test5()
+{
+	std::cout << "---------------------------\n";
+	std::cout << "Testing hashvalue() function\n";
+	fifteen fd{};
+	fifteen f{ { 1, 3, 4, 12 }, 
+	       { 5, 2, 7, 11 }, 
+	       { 9, 6, 14, 10 }, 
+	       { 13, 15, 0, 8 } } ;
+	std::cout << "Hash: " << f.hashvalue() << "\n" << f;
+	std::cout << "Hash: " << fd.hashvalue() << "\n" << fd;
+}
+
+void test6()
+{
+	std::cout << "---------------------------\n";
+	std::cout << "Testing makemove() function\n";
+	fifteen f{ { 1, 3, 4, 12 }, 
+	       { 5, 2, 7, 11 }, 
+	       { 9, 6, 14, 10 }, 
+	       { 13, 15, 0, 8 } } ;
+	std::vector<move> moves = {move::up, move::left, move::right, move::down};
+	std::cout << "Starting with\n" << f;
+	for (auto& m : moves) {
+		std::cout << "Making move: " << m << "\n";
+		f.makemove(m);
+		std::cout << f;
+	}
+
+	try {
+		std::cout << "Illigal move: " << move::down << "\n";
+		f.makemove(move::down);
+	}
+	catch (std::runtime_error ime) {
+		std::cout << "catching\n";
+		//std::cout << "Illegal move: " << ime << "\n";
+	}
+}
+
 
 //void the_main()
 //{
@@ -160,9 +199,11 @@ void test4()
 
 int main( int argc, char* argv [] )
 {
-	test1();
-	test2();
+	//test1();
+	//test2();
 	//test4();
+	//test5();
+	test6();
    return 0;
 }
 
