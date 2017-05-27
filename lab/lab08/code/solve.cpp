@@ -3,6 +3,7 @@
 #include "fifteen.h" 
 #include "tests.h"
 #include <unordered_map>
+#include <string>
 #include <queue>
 
 // Table of states and their levels:
@@ -32,7 +33,7 @@ solve( const fifteen& start )
    // As long as there is a state whose neighbours are unexplored,
    // we explore them:
 
-   char c;
+	std::string trash;
    while( unchecked. size( ))
    {
       fifteen best = unchecked. top( );
@@ -43,7 +44,7 @@ solve( const fifteen& start )
    
       std::cout << "best = " << best << "\n";
       std::cout << "distance = " << best. distance( ) << "\n";
-	  std::cin >> c;
+	  std::getline(std::cin, trash); 
 
       if( best. issolved( ))
          return levels;
@@ -83,6 +84,17 @@ std::list< move > findpath( const leveltable& levels,
       // All possible moves in a vector.
 
    std::list< move > path;
+	
+	
+   for( const auto& p : dist )
+   {
+		for (auto m& : m) {
+			
+		}
+      std::cout << "---------------------------\n";
+      std::cout << p.first << " " << p. second << "\n";
+		std::getline(std::cin, trash);
+   }
 
    return path;
 }
@@ -100,10 +112,14 @@ void the_main()
   
 
    auto dist = solve(f);
+   std::cout << "solved \n";
+	std::string trash;
+	std::getline(std::cin, trash);
    for( const auto& p : dist )
    {
       std::cout << "---------------------------\n";
       std::cout << p.first << " " << p. second << "\n";
+		std::getline(std::cin, trash);
    }
 
    auto path = findpath( dist, fifteen( ), dist[ fifteen( ) ] );
