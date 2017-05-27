@@ -44,7 +44,7 @@ solve( const fifteen& start )
    
       std::cout << "best = " << best << "\n";
       std::cout << "distance = " << best. distance( ) << "\n";
-	  std::getline(std::cin, trash); 
+	  //std::getline(std::cin, trash); 
 
       if( best. issolved( ))
          return levels;
@@ -75,6 +75,8 @@ solve( const fifteen& start )
 }
 
 #endif
+//std::unordered_map< fifteen, unsigned int, 
+                    //fifteen_hash, fifteen_equals > ;
 
 std::list< move > findpath( const leveltable& levels,
                             fifteen f, unsigned int level )
@@ -84,17 +86,36 @@ std::list< move > findpath( const leveltable& levels,
       // All possible moves in a vector.
 
    std::list< move > path;
+   std::string trash;
 	
 	
-   for( const auto& p : dist )
-   {
-		for (auto m& : m) {
-			
+   
+   	auto new_level = level;
+	auto candidate = f;
+	auto min_table = f;
+
+	while (level > 0) {
+		for (const auto& m : moves) {
+			try {
+					candidate.makemove(m);
+					new_level = levels.at(candidate);
+					if (new_level < level) {
+						std::cout << candidate << "\n";
+						min_table = candidate;
+						level = new_level;
+						path.push_front(-m);
+					}
+					else {
+						candidate = min_table;
+					}
+					//std::cout << level << "\n";
+			}
+			catch (illegalmove& im) { /* catch and do nothing */}
+			catch (std::out_of_range& oor) { candidate = min_table; }
 		}
-      std::cout << "---------------------------\n";
-      std::cout << p.first << " " << p. second << "\n";
-		std::getline(std::cin, trash);
-   }
+	}
+
+  
 
    return path;
 }
@@ -111,20 +132,16 @@ void the_main()
               { 13, 15, 0, 8 } } ;
   
 
-   auto dist = solve(f);
-   std::cout << "solved \n";
-	std::string trash;
-	std::getline(std::cin, trash);
-   for( const auto& p : dist )
-   {
-      std::cout << "---------------------------\n";
-      std::cout << p.first << " " << p. second << "\n";
-		std::getline(std::cin, trash);
-   }
+	auto dist = solve(f);
+	std::cout << "solved \n";
 
-   auto path = findpath( dist, fifteen( ), dist[ fifteen( ) ] );
-   for( move m : path )
-      std::cout << m << "\n";
+	auto path = findpath( dist, fifteen( ), dist[ fifteen( ) ] );
+	std::cout << "Solving: \n" << f;
+	for (move m : path ) {
+		std::cout << m << "\n";
+		f.makemove(m);
+		std::cout << f;
+	}
 }
 
 int main( int argc, char* argv [] )

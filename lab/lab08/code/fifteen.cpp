@@ -123,24 +123,21 @@ fifteen::hashvalue( ) const
 	size_t hash = 0;
 	for(size_t i=0; i<dimension; ++i) {
 		for(size_t j=0; j<dimension; ++j) {
-			hash = (hash*alf_sz + table[i][j]) % 5381;
+			hash = (hash*alf_sz + table[i][j]) % 1000000321;
 		}
 	}
 	return hash;
 }
-//for(size_t i=0; i<dimension; ++i) {
-	//for(size_t j=0; j<dimension; ++j) {
-		//hash = ((hash << 5) + hash) ^ table[i][j];
-	//}
-//}
-  // Construct a hash value on the state.
 
 bool
 fifteen::equals( const fifteen& other ) const
 {
-	// TODO a better way with hashes?
-	//return hashvalue() == other.hashvalue();
-	return distance() == other.distance();
+	for (size_t i =0; i<dimension; ++i)
+		for (size_t j =0; j<dimension; ++j)
+			if(table[i][j] != other.table[i][j])
+				return false;
+
+	return true;
 }
   // True if we are equal to other.
 
