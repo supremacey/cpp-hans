@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 
 #include "tree.h"
 #include "string.h"
@@ -86,29 +87,65 @@ void test5()
 		std::cout << "t4[" << i << "] " << t4[i].functor() << " address " << t4[i].getaddress() << "\n";
 }
 
+//void tree_test()
+//{
+//	 auto tp = [](const tree& t){
+//		std::cout << "tree: @" << t.getaddress() << "\t";
+//		std::cout << t << "\n";
+//	 };
+//	 auto tmap = [](const tree& t, std::function<void(const tree&)> f){
+//		f(t);
+//		for (size_t i=0; i<t.nrsubtrees(); ++i) {
+//			f(t[i]);
+//		}
+//	};
+//
+//	tree t1 {"Hello"};
+//	tree t2 {"World"};
+//	tree t3 {"Sentence", {t1,t2}};
+//	tmap(t1, tp);
+//	tmap(t2, tp);
+//	tmap(t3, tp);
+//	std::cout << "----------- Subst test ------------\n";
+//	auto t4 = subst(t3, "Hello", {"Goodbye"});
+//	tmap(t4, tp);
+//}
+void tp(const tree& t)
+{
+    std::cout << "tree: @" << t.getaddress() << "\t";
+    std::cout << t << "\n";
+}
+void tmap(const tree& t, std::function<void(const tree&)> f)
+{
+    f(t);
+    for (size_t i=0; i<t.nrsubtrees(); ++i) {
+        if (t[i].nrsubtrees() != 0) {
+            tmap(t[i],f);
+        }
+        else {
+            f(t[i]);
+        }
+    }
+}
+
 void tree_test()
 {
-	 auto tp = [](const tree& t){
-		std::cout << "tree: @" << t.getaddress() << "\t";
-		std::cout << t << "\n";
-	 };
-	 auto tmap = [](const tree& t, std::function<void(const tree&)> f){
-		f(t);
-		for (size_t i=0; i<t.nrsubtrees(); ++i) {
-			f(t[i]);
-		}
-	};
-
-	tree t1 {"Hello"};
-	tree t2 {"World"};
-	tree t3 {"Sentence", {t1,t2}};
-	tmap(t1, tp);
-	tmap(t2, tp);
-	tmap(t3, tp);
-	std::cout << "----------- Subst test ------------\n";
-	auto t4 = subst(t3, "Hello", {"Goodbye"});
-	tmap(t4, tp);
+    tree t1 {"Hello"};
+    tree t2 {"World"};
+    tree t3 {"Sentence", {t1,t2}};
+    tree t4 {"Hello", {t3}};
+    tmap(t1, tp);
+    tmap(t2, tp);
+    tmap(t3, tp);
+    tmap(t4, tp);
+    std::cout << "----------- Subst test ------------\n";
+    std::cout << "t = subst(t4, \"Hello\", {\"Goodbye\"})-\n";
+    //auto t = subst(t4, "Hello", {"Goodbye"});
+    //tmap(t, tp);
+    auto t = subst(t4, "Helo", {"Goodbye"});
+    tmap(t, tp);
 }
+
 
 int main()
 {

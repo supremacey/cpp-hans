@@ -61,10 +61,10 @@ public:
    void operator = ( const tree& t );
  
    const string& functor( ) const;
-   string& functor( );
+//   string& functor( );
 
    const tree& operator [ ] ( size_t i ) const;
-   tree& operator [ ] ( size_t i );
+ //  tree& operator [ ] ( size_t i );
    size_t nrsubtrees( ) const; 
    size_t getaddress() const;
 
