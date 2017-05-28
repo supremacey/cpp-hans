@@ -51,4 +51,39 @@ int powerproduct::power( ) const
 }
 
 
+void
+powerproduct::normalize( ) {
+	auto desc_cmp = [](const powvar& lhs, const powvar& rhs){
+		return lhs.v < rhs.v;
+	};
+	std::sort(repr.begin(), repr.end(), desc_cmp);
+
+	auto top_val = repr.back();  // take first element and erase it
+	repr.pop_back();
+
+	std::vector<powvar> new_repr{};  // create a new vector
+	new_repr.reserve(repr.size());
+
+	for (auto last = repr.rbegin(); last!=repr.rend(); ++last) {
+		if (last->v == top_val.v) {
+			top_val.n += last->n;
+		}
+		else {
+			new_repr.push_back(std::move(top_val));
+			top_val = *last;
+		}
+	}
+
+	new_repr.push_back(std::move(top_val));
+
+
+	for (const auto& v : repr ) std::cout << v << " ";
+	for (const auto& v : new_repr ) std::cout << v << " ";
+
+	new_repr.shrink_to_fit();  // shrink new vector
+	repr = std::move(new_repr);
+}
+	// 1. Sort the representation by variable. 
+	// 2. Merge powvars with identical variable.
+	// 3. Remove powvars with n == 0.
 

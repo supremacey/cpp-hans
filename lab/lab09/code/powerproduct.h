@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <functional>
+#include <string>
 
 
 // powvar is a silly name. There doesn't seem to exist a standard name.
@@ -15,9 +18,12 @@ struct powvar
    std::string v;  // variable
    int n;		   // exponent
 
-   powvar( const std::string& v, int n = 1 )
-      : v{v}, n{n}
-   { }
+   powvar( const std::string& nv, int n = 1 )
+      : v{nv}, n{n}
+   { 
+	   // TODO Added to normalize input
+	   std::sort(v.begin(), v.end());
+   }
 
 };
 
