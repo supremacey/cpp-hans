@@ -12,8 +12,8 @@
 
 struct powvar
 {
-   std::string v;
-   int n;
+   std::string v;  // variable
+   int n;		   // exponent
 
    powvar( const std::string& v, int n = 1 )
       : v{v}, n{n}
@@ -38,15 +38,15 @@ struct powerproduct
 
    powerproduct( const std::string& s, int n = 1 )
       : repr( { powvar(s,n) } )
-   { normalize( ); }    
+   { normalize( ); } // for a single variable without exponent   
 
    powerproduct( const powvar& p )
       : repr( { p } )
-   { normalize( ); }
+   { normalize( ); }  // for variable and exponent repr as powvar
 
    powerproduct( std::initializer_list< powvar > repr )
       : repr{ repr }
-   { normalize( ); }
+   { normalize( ); }  // with ini_list
 
    powerproduct( const std::vector< powvar > & repr )
       : repr{ repr }
