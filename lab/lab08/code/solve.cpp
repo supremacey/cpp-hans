@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include <queue>
+#include <random>
 
 // Table of states and their levels:
 
@@ -12,8 +13,6 @@ using leveltable =
 std::unordered_map< fifteen, unsigned int, 
                     fifteen_hash, fifteen_equals > ;
 
-
-#if 1 
 leveltable 
 solve( const fifteen& start )
 {
@@ -33,7 +32,6 @@ solve( const fifteen& start )
    // As long as there is a state whose neighbours are unexplored,
    // we explore them:
 
-	std::string trash;
    while( unchecked. size( ))
    {
       fifteen best = unchecked. top( );
@@ -42,9 +40,8 @@ solve( const fifteen& start )
          // solution. level is the number of moves that was required
          // to reach it.
    
-      std::cout << "best = " << best << "\n";
-      std::cout << "distance = " << best. distance( ) << "\n";
-	  //std::getline(std::cin, trash); 
+      //std::cout << "best = " << best << "\n";
+      //std::cout << "distance = " << best. distance( ) << "\n";
 
       if( best. issolved( ))
          return levels;
@@ -73,10 +70,6 @@ solve( const fifteen& start )
 
    return levels;  // In move we trust.  
 }
-
-#endif
-//std::unordered_map< fifteen, unsigned int, 
-                    //fifteen_hash, fifteen_equals > ;
 
 std::list< move > findpath( const leveltable& levels,
                             fifteen f, unsigned int level )
@@ -119,17 +112,20 @@ std::list< move > findpath( const leveltable& levels,
 
    return path;
 }
- 
 
 
 void the_main()
 {
   leveltable test;
 
+   //fifteen f{ { 1, 3, 4, 12 }, 
+              //{ 5, 2, 7, 11 }, 
+              //{ 9, 6, 14, 10 }, 
+              //{ 13, 15, 0, 8 } } ;
    fifteen f{ { 1, 3, 4, 12 }, 
-              { 5, 2, 7, 11 }, 
-              { 9, 6, 14, 10 }, 
-              { 13, 15, 0, 8 } } ;
+              { 13, 15, 0, 8 },
+			  { 9, 6, 14, 10 }, 
+              { 5, 2, 7, 11 } } ;
   
 
 	auto dist = solve(f);
@@ -137,11 +133,13 @@ void the_main()
 
 	auto path = findpath( dist, fifteen( ), dist[ fifteen( ) ] );
 	std::cout << "Solving: \n" << f;
+	std::cout << "in number of moves: " << path.size() << "\n";
 	for (move m : path ) {
 		std::cout << m << "\n";
 		f.makemove(m);
-		std::cout << f;
+		//std::cout << f;
 	}
+	std::cout << "Solved: \n" << f;
 }
 
 int main( int argc, char* argv [] )
