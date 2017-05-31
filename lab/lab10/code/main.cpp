@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "units.h"
 
 // Useful if you want to compute the yield of an atomic bomb:
@@ -59,7 +60,7 @@ void car_test()
 		return (v1+v2)/(1.0 + (v1*v2)/(c*c));
 	};
 	std::cout << "ccording to the addition law of special relativity "
-		"speed of car B is: " << std::scientific << u(vA, rvB) << ".\n";
+		"speed of car B is: " << std::setprecision(20) << u(vA, rvB) << ".\n";
 	std::cout << "----------------------------------\n";
 }
 
@@ -77,6 +78,7 @@ void nuclear_test()
 
 int main( int argc, char* argv [ ] )
 {
+	std::cout << std::setprecision(20);
 	test_mul();
 	test_main();
 	battery_test();

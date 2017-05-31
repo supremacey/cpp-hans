@@ -45,25 +45,15 @@ struct si<0,0,0,0>
 template< int M, int L, int T, int I >
 std::ostream& operator << ( std::ostream& out, si<M,L,T,I> quant )
 {
-   //std::cout << "good evening\n"; 
-   // If you want, you can catch special cases, like Newton/Watt.
+	auto pow = [&](std::string si_name, int v){
+		if (!v) return;
+		v != 1? out << si_name << "^{"<< v <<"}" : out << si_name;
+	};
 	out << quant.val;
-	if (M) {
-		out << "g";
-		if (M != 1) out << "^{"<< M <<"}";
-	} 
-	if (L) {
-		out << "m";
-		if (L != 1) out << "^{"<< L <<"}";
-	} 
-	if (T) {
-		out << "s";
-		if (T != 1) out << "^{"<< T <<"}";
-	} 
-	if (I) {
-		out << "A";
-		if (I != 1) out << "^{"<< I <<"}";
-	} 
+	pow("g", M);
+	pow("m", L);
+	pow("s", T);
+	pow("A", I);
 	return out; 
 }
 // Specializations
@@ -109,7 +99,7 @@ template< int M1, int L1, int T1, int I1,
 constexpr bool
 same_quantity( si<M1,L1,T1,I1> q1, si<M2,L2,T2,I2> q2 )
 {
-	return (M1-M2 + L1-L2 + T1-T2 + I1-I2) == 0;
+	return !((M1-M2) || (L1-L2) || (T1-T2) || (I1-I2));
 }
 
 template< int M1, int L1, int T1, int I1, int M2, int L2, int T2, int I2 >
