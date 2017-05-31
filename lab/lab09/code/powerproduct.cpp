@@ -50,17 +50,18 @@ int powerproduct::power( ) const
    return p;
 }
 
-
 void
 powerproduct::normalize( ) {
 	auto desc_cmp = [](const powvar& lhs, const powvar& rhs){
 		return lhs.v < rhs.v;
 	};
+	if (repr.size() == 0) return;
 	std::sort(repr.begin(), repr.end(), desc_cmp);
 
 	auto top_val = repr.back();  // take first element and erase it
 	repr.pop_back();
 
+	// using two iterators you can save on this vector
 	std::vector<powvar> new_repr{};  // create a new vector
 	new_repr.reserve(repr.size());
 
@@ -69,21 +70,45 @@ powerproduct::normalize( ) {
 			top_val.n += last->n;
 		}
 		else {
-			new_repr.push_back(std::move(top_val));
+			if (top_val.n != 0)
+				new_repr.push_back(std::move(top_val));
 			top_val = *last;
 		}
 	}
 
 	new_repr.push_back(std::move(top_val));
 
-
-	for (const auto& v : repr ) std::cout << v << " ";
-	for (const auto& v : new_repr ) std::cout << v << " ";
-
 	new_repr.shrink_to_fit();  // shrink new vector
 	repr = std::move(new_repr);
 }
 	// 1. Sort the representation by variable. 
-	// 2. Merge powvars with identical variable.
-	// 3. Remove powvars with n == 0.
+	// 2. Remove powvars with n == 0.
+	// 3. Merge powvars with identical variable removing 0.
+int
+powerproduct::compare( const powerproduct& c1, const powerproduct& c2 )
+{
+	// compare value -> if same compare lexicographically
+	auto c1it = c1.repr.cbegin();
+	auto c2it = c2.repr.cbegin();
+	int r = 0;
+	while (c1it != c1.repr.end() && c2it != c2.repr.end()) {
+		if (r = (c1it->n - c2it->n))
+			return r>0? 1 : -1;
+		if ( !(c1it->v == c2it->v))
+			return (c1it->v > c2it->v)? 1 : -1;
+		++c1it;
+		++c2it;
+	}
+	if (c1.repr.size() < c2.repr.size()) return -1;
+	else if (c1.repr.size() > c2.repr.size()) return 1;
+	return 0;
+}
+
+powerproduct
+operator * ( powerproduct c1, const powerproduct& c2 )
+{
+	c1.repr.insert(c1.repr.end(), c2.repr.begin(), c2.repr.end());
+	c1.normalize();
+	return c1;
+}
 

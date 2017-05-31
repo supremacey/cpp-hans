@@ -84,6 +84,32 @@ struct polynomial
 
 };
 
+template< typename M>
+polynomial<M>
+operator+(const polynomial<M>& lhs, const polynomial<M>& rhs)
+{
+	polynomial<M> result{lhs};
+	return result += rhs;
+}
+template< typename M>
+polynomial<M>
+operator-(const polynomial<M>& lhs, const polynomial<M>& rhs)
+{
+	polynomial<M> result{lhs};
+	return result -= rhs;
+}
+template< typename N >
+polynomial<N>
+operator*( const polynomial<N> & pol1, const polynomial<N> & pol2 )
+{
+	polynomial<N> result{};
+	for (const auto& p2 : pol2.repr)
+		for (const auto& p1: pol1.repr) {
+			result[p1.first*p2.first] += p1.second * p2.second;
+		}
+	return result;
+}
+
 
 template< typename M, typename N >
 polynomial<M> operator * ( polynomial<M> pol, N n )
