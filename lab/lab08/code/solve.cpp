@@ -81,17 +81,17 @@ std::list< move > findpath( const leveltable& levels,
    std::list< move > path;
    std::string trash;
 	
-	
-   
    	auto new_level = level;
 	auto candidate = f;
 	auto min_table = f;
-
 	while (level > 0) {
 		for (const auto& m : moves) {
 			try {
-					candidate.makemove(m);
-					new_level = levels.at(candidate);
+				candidate.makemove(m);
+				//new_level = levels.at(candidate);  // rather than at use find to not throw exceptions
+				auto new_it = levels.find(candidate);
+				if (new_it != levels.end()) {
+					new_level = (new_it)->second;
 					if (new_level < level) {
 						std::cout << candidate << "\n";
 						min_table = candidate;
@@ -101,10 +101,13 @@ std::list< move > findpath( const leveltable& levels,
 					else {
 						candidate = min_table;
 					}
-					//std::cout << level << "\n";
+				}
+				else {
+					candidate = min_table;
+				}
 			}
 			catch (illegalmove& im) { /* catch and do nothing */}
-			catch (std::out_of_range& oor) { candidate = min_table; }
+			catch (std::out_of_range& oor) { std::cout << "\a at exe.\n"; candidate = min_table; }
 		}
 	}
 
@@ -118,14 +121,15 @@ void the_main()
 {
   leveltable test;
 
-   //fifteen f{ { 1, 3, 4, 12 }, 
-              //{ 5, 2, 7, 11 }, 
-              //{ 9, 6, 14, 10 }, 
-              //{ 13, 15, 0, 8 } } ;
    fifteen f{ { 1, 3, 4, 12 }, 
-              { 13, 15, 0, 8 },
+			  { 5, 2, 7, 11 }, 
 			  { 9, 6, 14, 10 }, 
-              { 5, 2, 7, 11 } } ;
+			  { 13, 15, 0, 8 } } ;
+   
+   //fifteen f{ { 1, 3, 4, 12 }, 
+              //{ 13, 15, 0, 8 },
+			  //{ 9, 6, 14, 10 }, 
+              //{ 5, 2, 7, 11 } } ;
   
 
 	auto dist = solve(f);
